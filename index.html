@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English to Spanish Text-to-Speech Converter</title>
+</head>
+<body>
+    <h1>English to Spanish Text-to-Speech Converter</h1>
+    <textarea id="textInput" rows="4" cols="50" placeholder="Enter text in English"></textarea><br>
+    <button onclick="translateAndSpeak()">Convert to Speech</button>
+
+    <script>
+        function translateAndSpeak() {
+            const text = document.getElementById('textInput').value;
+            const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|es`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const translatedText = data.responseData.translatedText;
+                    const utterance = new SpeechSynthesisUtterance(translatedText);
+                    utterance.lang = 'es-ES';
+                    speechSynthesis.speak(utterance);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
